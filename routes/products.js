@@ -5,6 +5,6 @@ const productsRouters = Router();
 
 productsRouters.get('/', products.getAll);
 productsRouters.get('/:id', products.getById);
-productsRouters.post('/', () => { });
+productsRouters.post('/', (_req, res) => res.status(200).json('aqui'));
 
 module.exports = productsRouters;
