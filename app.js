@@ -1,15 +1,18 @@
 const express = require('express');
+const productsRouters = require('./routes/products');
 
 const app = express();
+app.use(express.json());
 
 // não remova esse endpoint, é para o avaliador funcionar
 app.get('/', (_request, response) => {
   response.send();
 });
 
-app.listen('3000', () => {
-  console.log('Começando o projeto');
-})
+app.use('/products', productsRouters);
+// app.listen('3000', () => {
+//   console.log('Começando o projeto');
+// });
 
 // não remova essa exportação, é para o avaliador funcionar
 // você pode registrar suas rotas normalmente, como o exemplo acima
