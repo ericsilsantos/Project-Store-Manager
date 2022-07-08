@@ -2,7 +2,7 @@ const service = require('../services/produtcsServices');
 
 const ZERO = 0;
 
-const getAll = async (req, res) => {
+const getAll = async (_req, res) => {
   try {
     const data = await service.getAll();
     return res.status(200).json(data);
@@ -18,7 +18,18 @@ const getById = async (req, res) => {
   res.status(200).json(data);
 };
 
+const add = async (req, res) => {
+  try {
+    const { name } = req.body;
+    const data = await service.add(name);
+    res.status(201).json(data);
+  } catch (error) {
+    res.status(400).json({ message: error });
+  }
+};
+
 module.exports = {
   getAll,
   getById,
+  add,
 };
