@@ -1,4 +1,5 @@
 const express = require('express');
+const errorHandle = require('./middlewares/errorMiddlewares');
 const productsRouters = require('./routes/products');
 
 const app = express();
@@ -10,6 +11,8 @@ app.get('/', (_request, response) => {
 });
 
 app.use('/products', productsRouters);
+
+app.use(errorHandle);
 // app.listen('3000', () => {
 //   console.log('Começando o projeto');
 // });

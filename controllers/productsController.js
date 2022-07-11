@@ -18,13 +18,14 @@ const getById = async (req, res) => {
   res.status(200).json(data);
 };
 
-const add = async (req, res) => {
+const add = async (req, res, next) => {
   try {
-    const { name } = req.body;
-    const data = await service.add(name);
-    res.status(201).json(data);
+    const { name } = await service.validationName(req.body);
+    const product = await service.add(name);
+    res.status(201).json(product);
   } catch (error) {
-    res.status(400).json({ message: error });
+    // res.status(400).json({ message: error });
+    next(error);
   }
 };
 
