@@ -33,4 +33,30 @@ describe('controller/productController', () => {
       chai.expect(productController.getById({ params: { id: 99 } }, {})).to.eventually.deep.equal({});
     })
   });
+  describe('add', () => {
+    it('Deve retornar um erro caso o services.validationName retorne um erro', () => {
+      sinon.stub(productService, 'validationName').rejects();
+      chai.expect(productController.add()).to.be.eventually.rejected;
+    });
+    it('Deve retornar um erro caso o services.add retorne um erro', () => {
+      sinon.stub(productService, 'validationName').resolves({});
+      sinon.stub(productService, 'add').rejects();
+      chai.expect(productController.add({}, {})).to.be.eventually.rejected;
+    });
+    it('Deve retornar um objeto caso o service.add retorne um objeto', async () => {
+      const result = { name: 'teste', id: 1 };
+      const next = sinon.stub().returns();
+      const res = {
+        status: sinon.stub().callsFake(() => res),
+        json: sinon.stub().returns(),
+      };
+      sinon.stub(productService, 'validationName').resolves({ name: 'teste'});
+      sinon.stub(productService, 'add').resolves(result);
+      await productController.add({}, res, next);
+      chai.expect(res.status.getCall(0).args[0]).to.equal(201);
+      chai.expect(res.json.getCall(0).args[0]).to.deep.equal(result);
+    });
+    it('', () => { });
+    it('', () => { });
+  });
 });
