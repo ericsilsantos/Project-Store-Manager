@@ -6,7 +6,11 @@ const registerSalesProducts = async (req, res, next) => {
     
     // https://stackoverflow.com/questions/40140149/use-async-await-with-array-map (Promise.all)
     await Promise.all(array.map((sale) => salesServices.validadeSales(sale)));
-    await Promise.all(array.map((sale) => salesServices.getById(sale.productId)));
+    await Promise.all(array.map(async (sale) => {  
+      const result = await salesServices.getById(sale.productId);
+      if (!result || result.length === 0) throw new Error('Product not found');
+      return result;
+    }));
 
     const id = await salesServices.registerSales();
     const itemsSold = await Promise.all(array.map((sale) =>
@@ -14,10 +18,16 @@ const registerSalesProducts = async (req, res, next) => {
   
     res.status(201).json({ id, itemsSold });
   } catch (error) {
-    const { message } = error; 
-    if (message === 'Product not found') return res.status(404).json({ message });
     next(error);
   }
 };
 
-module.exports = { registerSalesProducts };
+const getById = async () => { 
+
+};
+
+const getAll = async () => {
+
+};
+
+module.exports = { registerSalesProducts, getAll, getById };
