@@ -29,8 +29,26 @@ const add = async (req, res, next) => {
   }
 };
 
+const update = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const data = await service.getById(id);
+    if (!data || data.length === ZERO) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+    
+    const { name } = await service.validationName(req.body);
+    
+    const updateID = await service.update(name, id);
+    res.status(200).json({ id: updateID, name });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   getAll,
   getById,
   add,
+  update,
 };
