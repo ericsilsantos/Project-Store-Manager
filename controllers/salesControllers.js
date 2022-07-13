@@ -22,12 +22,17 @@ const registerSalesProducts = async (req, res, next) => {
   }
 };
 
-const getById = async () => { 
-
+const getById = async (req, res) => {
+  const { id } = req.params;
+  const sale = await salesServices.getById(id);
+  if (!sale || sale.length === 0) return res.status(404).json({ message: 'Sale not found' });
+  res.status(200).json(sale);
 };
 
-const getAll = async () => {
+const getAll = async (_req, res) => {
+  const sales = await salesServices.getAll();
 
+  res.status(200).json(sales);
 };
 
 module.exports = { registerSalesProducts, getAll, getById };
