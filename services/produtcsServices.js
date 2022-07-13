@@ -29,10 +29,16 @@ const update = async (name, id) => {
   return product;
 };
 
+const deleteProduct = async (id) => {
+  await model.deleteProduct(id);
+  return true;
+};
+
 module.exports = {
   getAll,
   getById,
   add,
   validationName,
   update,
+  deleteProduct,
 };
